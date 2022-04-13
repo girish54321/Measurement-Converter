@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:mytap/modal/data_class.dart';
 
@@ -23,10 +21,10 @@ class _HomeScreenState extends State<HomeScreen> {
   final double forInch = 2.54;
 
   final List<TapData> myProducts = [
-    TapData("inch", TapType.inch, TextEditingController()),
-    TapData("meter", TapType.meter, TextEditingController()),
-    TapData("foot", TapType.foot, TextEditingController()),
-    TapData("centimeter", TapType.centimeter, TextEditingController()),
+    TapData("Inch", TapType.inch, TextEditingController()),
+    TapData("Meter", TapType.meter, TextEditingController()),
+    TapData("Foot", TapType.foot, TextEditingController()),
+    TapData("Centimeter", TapType.centimeter, TextEditingController()),
   ];
 
   Widget textInputWithIcon(
@@ -34,18 +32,18 @@ class _HomeScreenState extends State<HomeScreen> {
       required TapType tapType,
       required TextEditingController? textEditingController}) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+      padding: const EdgeInsets.all(12.0),
+      child: Stack(
         children: [
-          Text(text),
           Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const FlutterLogo(size: 77),
                 TextField(
+                  style: const TextStyle(
+                    fontSize: 22.0,
+                    height: 2.0,
+                  ),
                   controller: setController(tapType),
                   keyboardType: TextInputType.number,
                   textInputAction: TextInputAction.done,
@@ -55,6 +53,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 )
               ]),
+          Align(
+            alignment: Alignment.topRight,
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 22),
+            ),
+          ),
+          Container(
+              margin: const EdgeInsets.only(top: 26),
+              height: 90,
+              child: Image.asset(
+                "asset/image/app_icon.png",
+              )),
+          // FlutterLogo(size: 88),
         ],
       ),
     );
@@ -63,16 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
   String truncateString(String data, int length) {
     return (data.length >= length) ? '${data.substring(0, length)}...' : data;
   }
-
-  // String trimText(int num) {
-  //   var char = num.toString();
-
-  //   if (char.length > 5) {
-  //    char =  'My Very Long Text'.truncateString(7); // My Very...
-  //   }
-
-  //   return "";
-  // }
 
   TextEditingController setController(TapType tapType) {
     switch (tapType) {
@@ -90,9 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void doCalculation(TapType tapType) {
-    //* Update CM to ich
     var givenValue = int.parse(setController(tapType).text);
-
     switch (tapType) {
       case TapType.centimeter:
         var meter = givenValue / forMeter;
@@ -109,9 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
         var foot = givenValue * 3.281;
         var inch = givenValue * 39.37;
 
-        centimeterController.text = cm.toString();
-        footController.text = foot.toString();
-        inchController.text = inch.toString();
+        centimeterController.text = truncateString(cm.toString(), 5);
+        footController.text = truncateString(foot.toString(), 5);
+        inchController.text = truncateString(inch.toString(), 5);
 
         break;
       case TapType.foot:
@@ -119,9 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
         var meter = givenValue / 3.281;
         var inch = givenValue * 12;
 
-        centimeterController.text = cm.toString();
-        meterController.text = meter.toString();
-        inchController.text = inch.toString();
+        centimeterController.text = truncateString(cm.toString(), 5);
+        meterController.text = truncateString(meter.toString(), 5);
+        inchController.text = truncateString(inch.toString(), 5);
 
         break;
       case TapType.inch:
@@ -129,9 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
         var foot = givenValue / 12;
         var meeter = givenValue / 39.37;
 
-        centimeterController.text = cm.toString();
-        footController.text = foot.toString();
-        meterController.text = meeter.toString();
+        centimeterController.text = truncateString(cm.toString(), 5);
+        footController.text = truncateString(foot.toString(), 5);
+        meterController.text = truncateString(meeter.toString(), 5);
 
         break;
       default:
@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 350,
+                maxCrossAxisExtent: 200,
                 childAspectRatio: 1 / 1,
                 crossAxisSpacing: 4,
                 mainAxisSpacing: 4),
